@@ -3,36 +3,61 @@ import { HTMLFactory } from './factories/HTMLFactory';
 import { MarkdownFactory } from './factories/MarkdownFactory';
 import { JsonInput } from './types/code';
 
+import * as fs from 'fs';
+import * as path from 'path';
+import * as readline from 'readline';
 
-const jsonInput: JsonInput = {
-  data: {
-    "Title 1": "Mi Título Principal",
-    "Title 2": "Subtítulo Importante",
-    "Title 3": "Sección Detallada",
-    paragraph: "Este es un párrafo de ejemplo que demuestra cómo se formatea el contenido en diferentes lenguajes de marcado.",
-    quote: "Esta es una cita inspiradora que se mostrará de manera destacada en el resultado final."
+// Crear interfaz para leer desde consola
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+//  Preguntar ruta del archivo JSON
+rl.question(' Ingresa la ruta del archivo JSON: ', (filePathInput: string) => {
+  const filePath = path.resolve(filePathInput);
+
+  if (!fs.existsSync(filePath)) {
+    console.error('Archivo no encontrado. Verifica la ruta.');
+    rl.close();
+    return;
   }
-};
 
-// HTML
-console.log('=== FORMATO HTML ===');
-const htmlFactory = new HTMLFactory();
-const htmlClient = new Client(htmlFactory);
-const htmlResult = htmlClient.getFormat(jsonInput.data);
-console.log(htmlResult);
+  let jsonInput: JsonInput;
+  try {
+    const rawData = fs.readFileSync(filePath, 'utf-8');
+    jsonInput = JSON.parse(rawData);
+  } catch (error) {
+    console.error(' Error al leer el archivo JSON:', error);
+    rl.close();
+    return;
+  }
 
-console.log('\n=== FORMATO MARKDOWN ===');
-const markdownFactory = new MarkdownFactory();
-const markdownClient = new Client(markdownFactory);
-const markdownResult = markdownClient.getFormat(jsonInput.data);
-console.log(markdownResult);
+  console.log('\n=== Selecciona un formato ===');
+  console.log('1. HTML');
+  console.log('2. Markdown');
 
-// Markdown
-console.log('\n=== USANDO MISMO CLIENTE ===');
-const client = new Client(new HTMLFactory());
-console.log('Inicialmente HTML:');
-console.log(client.getFormat(jsonInput.data));
+  rl.question(' Selecciona 1 o 2: ', (option: string) => {
+    let factory;
 
-client.setFactory(new MarkdownFactory());
-console.log('\nCambiado a Markdown:');
-console.log(client.getFormat(jsonInput.data));
+    if (option === '1') {
+      console.log('\n Generando en HTML...');
+      factory = new HTMLFactory();
+    } else if (option === '2') {
+      console.log('\n Generando en Markdown...');
+      factory = new MarkdownFactory();
+    } else {
+      console.error(' Opción inválida.');
+      rl.close();
+      return;
+    }
+
+    const client = new Client(factory);
+    const result = client.getFormat(jsonInput.data);
+
+    console.log('\n=== RESULTADO FINAL ===\n');
+    console.log(result);
+
+    rl.close();
+  });
+});

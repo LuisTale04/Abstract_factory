@@ -1,0 +1,21 @@
+{
+  "data": {
+    "Title 1": "Mi Título Principal",
+  "Title 2": "Subtítulo Importante",
+  "Title 3": "Detalles Finales",
+  "paragraph": "Este es un párrafo de ejemplo que será transformado según el formato elegido (HTML o Markdown). Sirve para probar el funcionamiento del patrón Abstract Factory.",
+  "quote": "La tecnología es mejor cuando une a las personas.",
+  "Title 4": "Sección Adicional",
+  "paragraph2": "Aquí añadimos un segundo párrafo para ver cómo se comporta la generación en diferentes formatos. Este párrafo incluye información adicional y ejemplos de uso.",
+  "Title 5": "Notas Importantes",
+  "bulletPoints": [
+    "Punto 1: Verificar la compatibilidad de formatos.",
+    "Punto 2: Comprobar el manejo de JSON más largo.",
+    "Punto 3: Asegurar que las citas se muestran correctamente."
+  ],
+  "quote2": "La innovación distingue a los líderes de los seguidores.",
+  "paragraph3": "Este tercer párrafo sirve para comprobar la robustez del sistema al manejar múltiples secciones, títulos y elementos de texto.",
+  "Title 6": "Conclusión",
+  "paragraph4": "Finalmente, esta sección concluye el documento y permite observar cómo se traduce todo el contenido en HTML o Markdown."
+  }
+}
